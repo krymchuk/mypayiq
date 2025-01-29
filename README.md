@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MyPay IQ - Subscription Management Dashboard
+
+A modern subscription management dashboard built with Next.js 14, TypeScript, and Tailwind CSS.
+
+## Features
+
+- 🎨 Modern and responsive UI
+- 📱 Mobile-first design
+- 🎯 Subscription tracking and management
+- 📊 Payment analytics
+- 🔍 Search and filtering capabilities
+- 🎭 Status monitoring
+- 🖼️ Optimized image loading
+
+## Tech Stack
+
+- Next.js 14 (App Router)
+- TypeScript
+- Tailwind CSS
+- Lucide React Icons
 
 ## Getting Started
 
-First, run the development server:
-
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd mypay-iq
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Run the development server:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/                    # App router pages
+├── components/
+│   ├── layout/            # Layout components (Sidebar, Header)
+│   ├── features/          # Feature components
+│   └── shared/            # Shared/reusable components
+├── styles/                # Global styles
+└── utils/                 # Utility functions
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Color Scheme
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Primary Purple: #7C5CFC
+- Success Green: #2ECC71
+- Danger Red: #FF4757
+- Text Gray: #8395A7
+- Background: #FFFFFF
+- Border: #F1F2F6
 
-## Deploy on Vercel
+## Available Routes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `/` - Home page
+- `/dashboard` - Main dashboard
+- `/subscriptions` - Subscription management
+- `/cards` - Payment cards
+- `/history` - Transaction history
+- `/settings` - User settings
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Development
+
+The project uses:
+- ESLint for code linting
+- Prettier for code formatting
+- TypeScript for type safety
+
+## License
+
+MIT
