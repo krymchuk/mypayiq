@@ -1,6 +1,17 @@
 # mypayIQ - Smart Subscription Management
 
-A modern subscription and payment management dashboard built with Next.js 14, TypeScript, and Tailwind CSS.
+A modern subscription and payment management dashboard built with Next.js 14, TypeScript, and Tailwind CSS. This project was entirely generated using AI (Claude 3.5 Sonnet) through the Cursor IDE, showcasing the capabilities of AI-driven development.
+
+## AI-Powered Development
+
+This project stands as a testament to the capabilities of modern AI in software development:
+
+- 🤖 100% AI-generated codebase
+- 🎯 Generated using Claude 3.5 Sonnet via Cursor IDE
+- ✨ Clean, maintainable, and production-ready code
+- 🔄 Iterative development through AI-human collaboration
+- 📚 Auto-generated documentation and comments
+- 🧪 AI-assisted testing and quality assurance
 
 ## Features
 
