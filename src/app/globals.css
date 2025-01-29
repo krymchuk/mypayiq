@@ -2,20 +2,76 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Main colors */
+    --background: 255, 255, 255;  /* White */
+    --foreground: 52, 58, 64;     /* Dark gray for main text #343A40 */
+
+    /* Brand colors */
+    --primary: 124, 92, 252;      /* Purple #7C5CFC */
+    --primary-hover: 107, 79, 224; /* Darker purple #6B4FE0 */
+
+    /* Status colors */
+    --success: 46, 204, 113;      /* Green #2ECC71 */
+    --danger: 255, 71, 87;        /* Red #FF4757 */
+    --warning: 255, 159, 67;      /* Orange #FF9F43 */
+
+    /* Text colors */
+    --text-dark: 52, 58, 64;      /* Dark gray for headings #343A40 */
+    --text-muted: 108, 117, 125;  /* Medium gray for secondary text #6C757D */
+    --text-light: 173, 181, 189;  /* Light gray for disabled text #ADB5BD */
+
+    /* Border and background accents */
+    --border: 241, 242, 246;      /* Light gray for borders #F1F2F6 */
+    --hover: 248, 249, 250;       /* Very light gray for hover states #F8F9FA */
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  /* Base text styles */
+  body {
+    @apply text-[rgb(var(--foreground))] bg-[rgb(var(--background))];
+  }
+
+  /* Heading styles */
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-[rgb(var(--text-dark))] font-semibold;
+  }
+
+  /* Link styles */
+  a {
+    @apply text-[rgb(var(--primary))] hover:text-[rgb(var(--primary-hover))];
+  }
+
+  /* Paragraph and secondary text */
+  p {
+    @apply text-[rgb(var(--foreground))];
+  }
+
+  .text-muted {
+    @apply text-[rgb(var(--text-muted))];
+  }
+
+  /* Status colors */
+  .text-success {
+    @apply text-[rgb(var(--success))];
+  }
+
+  .text-danger {
+    @apply text-[rgb(var(--danger))];
+  }
+
+  .text-warning {
+    @apply text-[rgb(var(--warning))];
+  }
+
+  /* Background utilities */
+  .bg-hover {
+    @apply bg-[rgb(var(--hover))];
+  }
+
+  .border-default {
+    @apply border-[rgb(var(--border))];
+  }
 }
