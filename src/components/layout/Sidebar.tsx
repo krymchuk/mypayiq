@@ -28,7 +28,7 @@ export function Sidebar() {
   return (
     <div className="flex h-full w-60 flex-col border-r border-[#F1F2F6] bg-white">
       <div className="flex h-16 items-center border-b border-[#F1F2F6] px-4">
-        <h1 className="text-xl font-bold text-[#7C5CFC]">MyPay IQ</h1>
+        <h1 className="text-xl font-bold text-[#7C5CFC]">mypayIQ</h1>
       </div>
       <nav className="flex-1 space-y-1 px-2 py-4">
         {navigation.map((item) => {

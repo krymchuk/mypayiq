@@ -5,8 +5,11 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "MyPay IQ - Subscription Management Dashboard",
-  description: "Manage your subscriptions efficiently with MyPay IQ",
+  title: "mypayIQ - Smart Subscription Management",
+  description: "Manage your subscriptions and payments efficiently with mypayIQ",
+  keywords: "subscription management, payment tracking, financial dashboard",
+  authors: [{ name: "mypayIQ Team" }],
+  viewport: "width=device-width, initial-scale=1",
 };
 
 export default function RootLayout({

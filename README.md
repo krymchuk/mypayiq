@@ -1,6 +1,6 @@
-# MyPay IQ - Subscription Management Dashboard
+# mypayIQ - Smart Subscription Management
 
-A modern subscription management dashboard built with Next.js 14, TypeScript, and Tailwind CSS.
+A modern subscription and payment management dashboard built with Next.js 14, TypeScript, and Tailwind CSS.
 
 ## Features
 
@@ -11,12 +11,14 @@ A modern subscription management dashboard built with Next.js 14, TypeScript, an
 - 🔍 Search and filtering capabilities
 - 🎭 Status monitoring
 - 🖼️ Optimized image loading
+- 🔐 Secure authentication with Supabase
 
 ## Tech Stack
 
 - Next.js 14 (App Router)
 - TypeScript
 - Tailwind CSS
+- Supabase Auth
 - Lucide React Icons
 
 ## Getting Started
@@ -24,7 +26,7 @@ A modern subscription management dashboard built with Next.js 14, TypeScript, an
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd mypay-iq
+cd mypayiq
 ```
 
 2. Install dependencies:
@@ -32,12 +34,16 @@ cd mypay-iq
 npm install
 ```
 
-3. Run the development server:
+3. Set up environment variables:
+- Copy `.env.example` to `.env.local`
+- Add your Supabase credentials
+
+4. Run the development server:
 ```bash
 npm run dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## Project Structure
 
@@ -45,7 +51,8 @@ npm run dev
 src/
 ├── app/                    # App router pages
 ├── components/
-│   ├── layout/            # Layout components (Sidebar, Header)
+│   ├── auth/              # Authentication components
+│   ├── layout/            # Layout components
 │   ├── features/          # Feature components
 │   └── shared/            # Shared/reusable components
 ├── styles/                # Global styles
@@ -67,7 +74,9 @@ src/
 - `/dashboard` - Main dashboard
 - `/subscriptions` - Subscription management
 - `/cards` - Payment cards
+- `/files` - File management
 - `/history` - Transaction history
+- `/calendar` - Calendar view
 - `/settings` - User settings
 
 ## Development
