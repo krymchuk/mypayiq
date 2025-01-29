@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Search, Bell, User as UserIcon, LogOut, ChevronDown } from 'lucide-react';
+import { Search, Bell, User as UserIcon, LogOut, ChevronDown, Settings } from 'lucide-react';
 import { createBrowserClient } from '@supabase/ssr';
 import type { User } from '@supabase/supabase-js';
 
@@ -80,6 +80,20 @@ export function Header() {
 
             {isMenuOpen && (
               <div className="absolute right-0 mt-2 w-48 rounded-lg border border-[#F1F2F6] bg-white py-1 shadow-lg">
+                <button
+                  onClick={() => router.push('/profile')}
+                  className="flex w-full items-center space-x-2 px-4 py-2 text-sm text-[rgb(var(--foreground))] hover:bg-[#F1F2F6]"
+                >
+                  <UserIcon className="h-4 w-4" />
+                  <span>My Profile</span>
+                </button>
+                <button
+                  onClick={() => router.push('/settings')}
+                  className="flex w-full items-center space-x-2 px-4 py-2 text-sm text-[rgb(var(--foreground))] hover:bg-[#F1F2F6]"
+                >
+                  <Settings className="h-4 w-4" />
+                  <span>Settings</span>
+                </button>
                 <button
                   onClick={handleSignOut}
                   className="flex w-full items-center space-x-2 px-4 py-2 text-sm text-[#FF4757] hover:bg-[#F1F2F6]"

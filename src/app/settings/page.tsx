@@ -10,6 +10,7 @@ import {
   User,
   ChevronRight,
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const settingsSections = [
   {
@@ -22,6 +23,7 @@ const settingsSections = [
         title: 'Profile Information',
         description: 'Update your personal information and email',
         icon: User,
+        href: '/profile',
       },
       {
         id: 'security',
@@ -65,6 +67,14 @@ const settingsSections = [
 ];
 
 export default function SettingsPage() {
+  const router = useRouter();
+
+  const handleItemClick = (href?: string) => {
+    if (href) {
+      router.push(href);
+    }
+  };
+
   return (
     <AppLayout>
       <div className="space-y-6">
@@ -87,6 +97,7 @@ export default function SettingsPage() {
                 {section.items.map((item) => (
                   <button
                     key={item.id}
+                    onClick={() => handleItemClick(item.href)}
                     className="flex w-full items-center justify-between p-4 text-left hover:bg-[#F1F2F6]/50"
                   >
                     <div className="flex items-center space-x-4">
