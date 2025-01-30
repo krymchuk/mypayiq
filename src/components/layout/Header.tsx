@@ -55,9 +55,6 @@ export function Header() {
         </div>
 
         <div className="flex items-center space-x-6">
-          <button className="rounded-lg bg-[#7C5CFC] px-4 py-2 text-sm font-medium text-white hover:bg-[#6B4FE0]">
-            Transfer money
-          </button>
           <button
             onClick={() => setIsAddModalOpen(true)}
             className="rounded-lg bg-[#7C5CFC] px-4 py-2 text-sm font-medium text-white hover:bg-[#6B4FE0]"

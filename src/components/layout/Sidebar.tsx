@@ -39,7 +39,7 @@ export function Sidebar() {
               href={item.href}
               className={`group flex items-center rounded-lg px-3 py-2 text-sm font-medium ${
                 isActive
-                  ? 'bg-[#7C5CFC] text-white'
+                  ? 'bg-[#7C5CFC] text-white hover:text-white'
                   : 'text-[#8395A7] hover:bg-[#F1F2F6]'
               }`}
             >
