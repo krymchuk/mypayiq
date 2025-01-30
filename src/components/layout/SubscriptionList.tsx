@@ -1,16 +1,9 @@
 'use client';
 
 import { SubscriptionCard } from '@/components/features/SubscriptionCard';
+import type { Database } from '@/lib/database.types';
 
-interface Subscription {
-  id: string;
-  name: string;
-  plan: string;
-  status: 'active' | 'inactive' | 'pending' | 'ended';
-  price: string;
-  logoUrl?: string;
-  dueDate?: string;
-}
+type Subscription = Database['public']['Tables']['subscriptions']['Row'];
 
 interface SubscriptionListProps {
   title: string;
@@ -33,8 +26,8 @@ export function SubscriptionList({ title, subscriptions }: SubscriptionListProps
             plan={subscription.plan}
             status={subscription.status}
             price={subscription.price}
-            logoUrl={subscription.logoUrl}
-            dueDate={subscription.dueDate}
+            logoUrl={subscription.logo_url}
+            dueDate={subscription.due_date}
           />
         ))}
       </div>

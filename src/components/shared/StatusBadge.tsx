@@ -1,7 +1,9 @@
 'use client';
 
-interface StatusBadgeProps {
-  status: 'active' | 'inactive' | 'pending' | 'ended';
+export type SubscriptionStatus = 'active' | 'inactive' | 'pending' | 'ended';
+
+export interface StatusBadgeProps {
+  status: SubscriptionStatus;
 }
 
 const statusStyles = {

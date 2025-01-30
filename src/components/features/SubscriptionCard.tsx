@@ -2,15 +2,15 @@
 
 import Image from 'next/image';
 import { MoreVertical } from 'lucide-react';
-import { StatusBadge } from '@/components/shared/StatusBadge';
+import { StatusBadge, SubscriptionStatus } from '@/components/shared/StatusBadge';
 
 interface SubscriptionCardProps {
   name: string;
   plan: string;
-  status: 'active' | 'inactive' | 'pending' | 'ended';
-  price: string;
-  logoUrl?: string;
-  dueDate?: string;
+  status: string;
+  price: number;
+  logoUrl: string | null;
+  dueDate: string | null;
 }
 
 export function SubscriptionCard({
@@ -43,7 +43,7 @@ export function SubscriptionCard({
       </div>
 
       <div className="flex items-center space-x-6">
-        <StatusBadge status={status} />
+        <StatusBadge status={status as SubscriptionStatus} />
         <div className="text-right">
           <p className="font-medium">{price}</p>
           {dueDate && (
