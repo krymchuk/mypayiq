@@ -35,8 +35,8 @@ export default function SignInPage() {
         throw error;
       }
 
-      router.push(redirectTo);
       router.refresh();
+      router.push(redirectTo);
     } catch (error) {
       setError((error as Error).message);
     } finally {
