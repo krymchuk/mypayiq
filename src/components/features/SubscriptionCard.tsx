@@ -21,6 +21,21 @@ export function SubscriptionCard({
   logoUrl,
   dueDate,
 }: SubscriptionCardProps) {
+  const formatDate = (date: string) => {
+    return new Date(date).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  };
+
+  const formatPrice = (amount: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    }).format(amount);
+  };
+
   return (
     <div className="flex items-center justify-between rounded-lg border border-[#F1F2F6] bg-white p-4">
       <div className="flex items-center space-x-4">
@@ -45,9 +60,9 @@ export function SubscriptionCard({
       <div className="flex items-center space-x-6">
         <StatusBadge status={status as SubscriptionStatus} />
         <div className="text-right">
-          <p className="font-medium">{price}</p>
+          <p className="font-medium">{formatPrice(price)}</p>
           {dueDate && (
-            <p className="text-sm text-[#8395A7]">Due {dueDate}</p>
+            <p className="text-sm text-[#8395A7]">Due {formatDate(dueDate)}</p>
           )}
         </div>
         <button className="text-[#8395A7] hover:text-[#7C5CFC]">
