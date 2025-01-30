@@ -8,9 +8,10 @@ type Subscription = Database['public']['Tables']['subscriptions']['Row'];
 interface SubscriptionListProps {
   title: string;
   subscriptions: Subscription[];
+  onReload: () => Promise<void>;
 }
 
-export function SubscriptionList({ title, subscriptions }: SubscriptionListProps) {
+export function SubscriptionList({ title, subscriptions, onReload }: SubscriptionListProps) {
   if (subscriptions.length === 0) {
     return null;
   }
@@ -23,6 +24,7 @@ export function SubscriptionList({ title, subscriptions }: SubscriptionListProps
           <SubscriptionCard
             key={subscription.id}
             {...subscription}
+            onReload={onReload}
           />
         ))}
       </div>

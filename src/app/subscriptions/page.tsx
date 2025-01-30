@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { SubscriptionList } from '@/components/layout/SubscriptionList';
 import { useSupabase } from '@/hooks/useSupabase';
@@ -8,75 +8,49 @@ import type { Database } from '@/lib/database.types';
 
 type Subscription = Database['public']['Tables']['subscriptions']['Row'];
 
-interface GroupedSubscriptions {
-  active: Subscription[];
-  ending: Subscription[];
-  ended: Subscription[];
-}
-
 export default function SubscriptionsPage() {
   const { client } = useSupabase();
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [subscriptions, setSubscriptions] = useState<GroupedSubscriptions>({
-    active: [],
-    ending: [],
-    ended: [],
-  });
+
+  const fetchSubscriptions = useCallback(async () => {
+    try {
+      const { data, error } = await client
+        .from('subscriptions')
+        .select('*')
+        .order('due_date', { ascending: true });
+
+      if (error) throw error;
+
+      setSubscriptions(data || []);
+    } catch (error) {
+      console.error('Error loading subscriptions:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [client]);
 
   useEffect(() => {
-    async function fetchSubscriptions() {
-      try {
-        const { data, error } = await client
-          .from('subscriptions')
-          .select('*')
-          .order('due_date', { ascending: true });
-
-        if (error) throw error;
-
-        const now = new Date();
-        const oneWeekFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
-
-        const grouped = (data || []).reduce<GroupedSubscriptions>(
-          (acc, subscription) => {
-            const dueDate = subscription.due_date ? new Date(subscription.due_date) : null;
-
-            if (subscription.status === 'ended') {
-              acc.ended.push(subscription);
-            } else if (
-              dueDate &&
-              dueDate > now &&
-              dueDate <= oneWeekFromNow
-            ) {
-              acc.ending.push(subscription);
-            } else if (subscription.status === 'active') {
-              acc.active.push(subscription);
-            }
-
-            return acc;
-          },
-          { active: [], ending: [], ended: [] }
-        );
-
-        setSubscriptions(grouped);
-      } catch (error) {
-        console.error('Error fetching subscriptions:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
     fetchSubscriptions();
-  }, [client]);
+  }, [fetchSubscriptions]);
 
   if (isLoading) {
     return (
       <AppLayout>
-        <div className="flex items-center justify-center h-64">
-          <div className="text-[rgb(var(--muted))]">Loading subscriptions...</div>
+        <div className="flex h-[calc(100vh-4rem)] items-center justify-center">
+          <div className="text-center">
+            <div className="h-32 w-32 animate-spin rounded-full border-b-2 border-t-2 border-[#7C5CFC]"></div>
+            <p className="mt-4 text-[#8395A7]">Loading subscriptions...</p>
+          </div>
         </div>
       </AppLayout>
     );
   }
+
+  const activeSubscriptions = subscriptions.filter(sub => sub.status === 'active');
+  const inactiveSubscriptions = subscriptions.filter(sub => sub.status === 'inactive');
+  const pendingSubscriptions = subscriptions.filter(sub => sub.status === 'pending');
+  const endedSubscriptions = subscriptions.filter(sub => sub.status === 'ended');
 
   return (
     <AppLayout>
@@ -89,26 +63,12 @@ export default function SubscriptionsPage() {
         </div>
 
         <div className="space-y-8">
-          {subscriptions.active.length > 0 && (
-            <SubscriptionList
-              title="Active Subscriptions"
-              subscriptions={subscriptions.active}
-            />
-          )}
-          {subscriptions.ending.length > 0 && (
-            <SubscriptionList
-              title="Ending Soon"
-              subscriptions={subscriptions.ending}
-            />
-          )}
-          {subscriptions.ended.length > 0 && (
-            <SubscriptionList
-              title="Recently Ended"
-              subscriptions={subscriptions.ended}
-            />
-          )}
+          <SubscriptionList title="Active" subscriptions={activeSubscriptions} onReload={fetchSubscriptions} />
+          <SubscriptionList title="Pending" subscriptions={pendingSubscriptions} onReload={fetchSubscriptions} />
+          <SubscriptionList title="Inactive" subscriptions={inactiveSubscriptions} onReload={fetchSubscriptions} />
+          <SubscriptionList title="Ended" subscriptions={endedSubscriptions} onReload={fetchSubscriptions} />
 
-          {Object.values(subscriptions).every(arr => arr.length === 0) && (
+          {subscriptions.length === 0 && (
             <div className="text-center py-8 text-[rgb(var(--muted))]">
               No subscriptions found. Add your first subscription to get started.
             </div>

@@ -11,6 +11,10 @@ import { useRouter } from 'next/dist/client/components/navigation';
 
 type Subscription = Database['public']['Tables']['subscriptions']['Row'];
 
+interface SubscriptionCardProps extends Subscription {
+  onReload: () => Promise<void>;
+}
+
 export function SubscriptionCard({
   id,
   name,
@@ -19,8 +23,9 @@ export function SubscriptionCard({
   price,
   logo_url: logoUrl,
   due_date: dueDate,
+  onReload,
   ...subscription
-}: Subscription) {
+}: SubscriptionCardProps) {
   const { client } = useSupabase();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -41,7 +46,8 @@ export function SubscriptionCard({
     }).format(amount);
   };
 
-  const handleUpdate = () => {
+  const onUpdate = async () => {
+    await onReload();
     router.refresh();
   };
 
@@ -58,7 +64,7 @@ export function SubscriptionCard({
         .eq('id', id);
 
       if (error) throw error;
-      handleUpdate();
+      await onUpdate();
     } catch (error) {
       console.error('Error deleting subscription:', error);
     } finally {
@@ -135,7 +141,7 @@ export function SubscriptionCard({
         subscription={{ id, name, plan, status, price, logo_url: logoUrl, due_date: dueDate, ...subscription }}
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
-        onSuccess={() => handleUpdate()}
+        onSuccess={() => onUpdate()}
       />
     </>
   );

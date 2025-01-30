@@ -133,6 +133,19 @@ export function EditSubscriptionModal({
           </div>
 
           <div>
+            <label htmlFor="logo_url" className="block text-sm font-medium">Logo URL</label>
+            <input
+              type="url"
+              id="logo_url"
+              name="logo_url"
+              placeholder="https://example.com/logo.png"
+              value={formData.logo_url || ''}
+              onChange={handleChange}
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-[#7C5CFC] focus:ring-[#7C5CFC]"
+            />
+          </div>
+
+          <div>
             <label htmlFor="due_date" className="block text-sm font-medium">Due Date</label>
             <input
               type="date"
