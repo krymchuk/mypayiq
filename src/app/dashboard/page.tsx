@@ -14,7 +14,7 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           <div className="rounded-lg border border-default bg-white p-6">
             <h2 className="text-lg font-semibold">Active Subscriptions</h2>
-            <p className="mt-2 text-3xl font-bold text-success">12</p>
+            <p className="mt-2 text-3xl font-bold text-success">6</p>
           </div>
           <div className="rounded-lg border border-default bg-white p-6">
             <h2 className="text-lg font-semibold">Pending Payments</h2>
