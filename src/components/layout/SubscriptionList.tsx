@@ -22,12 +22,7 @@ export function SubscriptionList({ title, subscriptions }: SubscriptionListProps
         {subscriptions.map((subscription) => (
           <SubscriptionCard
             key={subscription.id}
-            name={subscription.name}
-            plan={subscription.plan}
-            status={subscription.status}
-            price={subscription.price}
-            logoUrl={subscription.logo_url}
-            dueDate={subscription.due_date}
+            {...subscription}
           />
         ))}
       </div>
