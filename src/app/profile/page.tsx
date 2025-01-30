@@ -1,20 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSupabase } from '@/hooks/useSupabase';
+import type { Database } from '@/lib/database.types';
 
-interface ProfileFormData {
-  full_name: string;
-  email: string;
-  phone: string;
-  company: string;
-  job_title: string;
-}
+type Profile = Database['public']['Tables']['profiles']['Row'];
 
 export default function ProfilePage() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState<ProfileFormData>({
+  const { client } = useSupabase();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [message, setMessage] = useState<{ type: 'error' | 'success', text: string } | null>(null);
+  const [formData, setFormData] = useState<Omit<Profile, 'id' | 'created_at' | 'updated_at' | 'user_id'>>({
     full_name: '',
     email: '',
     phone: '',
@@ -22,18 +21,72 @@ export default function ProfilePage() {
     job_title: '',
   });
 
+  useEffect(() => {
+    async function loadProfile() {
+      try {
+        const { data: { user } } = await client.auth.getUser();
+
+        if (!user) {
+          router.push('/auth/signin');
+          return;
+        }
+
+        const { data: profile, error } = await client
+          .from('profiles')
+          .select('*')
+          .eq('user_id', user.id)
+          .single();
+
+        if (error) throw error;
+
+        if (profile) {
+          setFormData({
+            full_name: profile.full_name || '',
+            email: profile.email || '',
+            phone: profile.phone || '',
+            company: profile.company || '',
+            job_title: profile.job_title || '',
+          });
+        }
+      } catch (error) {
+        console.error('Error loading profile:', error);
+        setMessage({ type: 'error', text: 'Failed to load profile' });
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadProfile();
+  }, [client, router]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    setIsSaving(true);
+    setMessage(null);
 
     try {
-      // TODO: Implement profile update logic with Supabase
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulated delay
-      router.push('/settings');
+      const { data: { user } } = await client.auth.getUser();
+
+      if (!user) {
+        throw new Error('No user found');
+      }
+
+      const { error } = await client
+        .from('profiles')
+        .update({
+          ...formData,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+
+      setMessage({ type: 'success', text: 'Profile updated successfully' });
     } catch (error) {
       console.error('Error updating profile:', error);
+      setMessage({ type: 'error', text: 'Failed to update profile' });
     } finally {
-      setIsLoading(false);
+      setIsSaving(false);
     }
   };
 
@@ -42,6 +95,14 @@ export default function ProfilePage() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64 w-full">
+        <div className="text-[rgb(var(--muted))]">Loading profile...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-2xl mx-auto">
@@ -49,6 +110,14 @@ export default function ProfilePage() {
           <h1 className="text-2xl font-bold text-[rgb(var(--foreground))]">Profile Information</h1>
           <p className="text-[rgb(var(--muted))]">Update your personal information and preferences</p>
         </div>
+
+        {message && (
+          <div className={`p-4 mb-4 rounded-md ${
+            message.type === 'error' ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700'
+          }`}>
+            {message.text}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-4">
@@ -60,7 +129,7 @@ export default function ProfilePage() {
                 type="text"
                 id="full_name"
                 name="full_name"
-                value={formData.full_name}
+                value={formData.full_name || ''}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-[rgb(var(--foreground))] bg-white shadow-sm focus:border-[#7C5CFC] focus:ring-[#7C5CFC] focus:ring-1"
                 placeholder="Enter your full name"
@@ -75,7 +144,7 @@ export default function ProfilePage() {
                 type="email"
                 id="email"
                 name="email"
-                value={formData.email}
+                value={formData.email || ''}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-[rgb(var(--foreground))] bg-white shadow-sm focus:border-[#7C5CFC] focus:ring-[#7C5CFC] focus:ring-1"
                 placeholder="Enter your email"
@@ -90,7 +159,7 @@ export default function ProfilePage() {
                 type="tel"
                 id="phone"
                 name="phone"
-                value={formData.phone}
+                value={formData.phone || ''}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-[rgb(var(--foreground))] bg-white shadow-sm focus:border-[#7C5CFC] focus:ring-[#7C5CFC] focus:ring-1"
                 placeholder="Enter your phone number"
@@ -105,7 +174,7 @@ export default function ProfilePage() {
                 type="text"
                 id="company"
                 name="company"
-                value={formData.company}
+                value={formData.company || ''}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-[rgb(var(--foreground))] bg-white shadow-sm focus:border-[#7C5CFC] focus:ring-[#7C5CFC] focus:ring-1"
                 placeholder="Enter your company name"
@@ -120,7 +189,7 @@ export default function ProfilePage() {
                 type="text"
                 id="job_title"
                 name="job_title"
-                value={formData.job_title}
+                value={formData.job_title || ''}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-[rgb(var(--foreground))] bg-white shadow-sm focus:border-[#7C5CFC] focus:ring-[#7C5CFC] focus:ring-1"
                 placeholder="Enter your job title"
@@ -133,15 +202,16 @@ export default function ProfilePage() {
               type="button"
               onClick={() => router.back()}
               className="px-4 py-2 text-sm font-medium text-[rgb(var(--foreground))] bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+              disabled={isSaving}
             >
               Cancel
             </button>
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isSaving}
               className="px-4 py-2 text-sm font-medium text-white bg-[#7C5CFC] rounded-md hover:bg-[#6B4FD8] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#7C5CFC] disabled:opacity-50"
             >
-              {isLoading ? 'Saving...' : 'Save Changes'}
+              {isSaving ? 'Saving...' : 'Save Changes'}
             </button>
           </div>
         </form>

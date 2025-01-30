@@ -23,8 +23,8 @@ export default function Home() {
             <p className="mt-2 text-3xl font-bold text-[#7C5CFC]">$3,240.43</p>
           </div>
           <div className="rounded-lg border border-[#F1F2F6] bg-gradient-to-r from-[#7C5CFC] to-[#6B4FE0] p-6 text-white">
-            <h2 className="text-lg font-semibold">Upgrade to PRO</h2>
-            <p className="mt-2 text-sm">Get access to advanced features and analytics</p>
+            <h2 className="text-lg font-semibold text-white">Upgrade to PRO</h2>
+            <p className="mt-2 text-sm text-white">Get access to advanced features and analytics</p>
             <button className="mt-4 rounded-lg bg-white px-4 py-2 text-sm font-medium text-[#7C5CFC]">
               Upgrade Now
             </button>
